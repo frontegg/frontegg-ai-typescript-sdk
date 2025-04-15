@@ -1,9 +1,15 @@
 {
   "name": "frontegg-ai-agents-sdk",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf dist && tsc",
+    "build:watch": "rm -rf dist && tsc --watch",
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
+    "format": "prettier --write \"**/*.+(js|ts|json)\""
   },
   "repository": {
     "type": "git",
@@ -19,7 +25,7 @@
   "dependencies": {
     "@frontegg/fes-typescript": "^0.3.7",
     "@langchain/mcp-adapters": "^0.4.2",
-    "@modelcontextprotocol/sdk": "^1.9.0",
+    "@modelcontextprotocol/sdk": "file://./modelcontextprotocol-sdk-1.9.0.tgz",
     "axios": "^1.7.9",
     "winston": "^3.17.0"
   },

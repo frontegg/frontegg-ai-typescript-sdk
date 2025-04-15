@@ -1,1 +1,1 @@
-export * from './client/frontegg-ai-agents-client';
+export * from './client';

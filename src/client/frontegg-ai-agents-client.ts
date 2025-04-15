@@ -1,13 +1,14 @@
 import { FronteggAiAgentsClientConfig } from './types/frontegg-ai-agents-client-config';
-import { Client } from '@modelcontextprotocol/sdk/client/index.d.ts';
 import { FronteggHttpTransport } from './frontegg-http-transport';
 import { loadMcpTools } from '@langchain/mcp-adapters';
 import Logger from './logger';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StructuredToolInterface } from '@langchain/core/tools';
 
 export class FronteggAiAgentsClient {
   private static instance: FronteggAiAgentsClient;
   private readonly mcpClient: Client;
-  private transport: FronteggHttpTransport;
+  private readonly transport: FronteggHttpTransport;
   private vendorJWT?: string;
   private vendorJWTExpiration?: Date;
   private constructor(private readonly config: FronteggAiAgentsClientConfig) {
@@ -21,6 +22,7 @@ export class FronteggAiAgentsClient {
       name: 'Frontegg AI Agents Client',
       version: '1.0.0',
     });
+    this.transport = new FronteggHttpTransport(new URL(this.config.mcpServerUrl));
   }
   public static async getInstance(config: FronteggAiAgentsClientConfig) {
     if (!FronteggAiAgentsClient.instance) {
@@ -37,9 +39,10 @@ export class FronteggAiAgentsClient {
     return FronteggAiAgentsClient.instance;
   }
 
-  public async getTools() {
+  public async getTools(tenantId: string, userId?: string) {
     try {
-      await this.refreshClientIfNeeded();
+      await this.refreshTransportIfNeeded();
+      this.transport.setFronteggParameters(this.config.agentId, tenantId, userId);
       const response = await this.mcpClient.listTools();
       return response.data;
     } catch (error) {
@@ -48,9 +51,10 @@ export class FronteggAiAgentsClient {
     }
   }
 
-  public async callTool(toolId: string, input: any) {
+  public async callTool(toolId: string, input: any, tenantId: string, userId?: string) {
     try {
-      await this.refreshClientIfNeeded();
+      await this.refreshTransportIfNeeded();
+      this.transport.setFronteggParameters(this.config.agentId, tenantId, userId);
       const response = await this.mcpClient.callTool({
         name: toolId,
         arguments: input,
@@ -62,9 +66,10 @@ export class FronteggAiAgentsClient {
     }
   }
 
-  public async getToolsAsLangchainTools() {
+  public async getToolsAsLangchainTools(tenantId: string, userId?: string): Promise<any[]> {
     try {
-      await this.refreshClientIfNeeded();
+      await this.refreshTransportIfNeeded();
+      this.transport.setFronteggParameters(this.config.agentId, tenantId, userId);
       const tools = await loadMcpTools('frontegg', this.mcpClient);
       return tools;
     } catch (error) {
@@ -82,20 +87,9 @@ export class FronteggAiAgentsClient {
     }
   }
 
-  private async refreshClientIfNeeded() {
+  private async refreshTransportIfNeeded() {
     if (!this.vendorJWT || !this.vendorJWTExpiration || this.vendorJWTExpiration < new Date()) {
-      await this.refreshClient();
-    }
-  }
-
-  private async refreshClient() {
-    try {
-      await this.mcpClient.close();
       await this.refreshTransport();
-      await this.connect();
-    } catch (error) {
-      Logger.error('Failed to refresh client', error);
-      throw error;
     }
   }
 
@@ -105,11 +99,7 @@ export class FronteggAiAgentsClient {
       if (!this.vendorJWT || !this.vendorJWTExpiration) {
         throw new Error('Failed to refresh vendor JWT - JWT or expiration missing after refresh attempt');
       }
-      this.transport = new FronteggHttpTransport(
-        new URL(this.config.mcpServerUrl),
-        this.config.agentId,
-        this.vendorJWT,
-      );
+      this.transport.setAuthToken(this.vendorJWT);
     } catch (error) {
       Logger.error('Failed to refresh transport', error);
       throw error;
@@ -131,7 +121,7 @@ export class FronteggAiAgentsClient {
         },
         body: JSON.stringify({
           clientId: this.config.clientId,
-          clientSecret: this.config.clientSecret,
+          secret: this.config.clientSecret,
         }),
       });
 

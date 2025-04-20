@@ -38,10 +38,9 @@ export class FronteggAiAgentsClient {
     return FronteggAiAgentsClient.instance;
   }
 
-  public async getTools(tenantId: string, userId?: string) {
+  public async getTools() {
     try {
       await this.refreshTransportIfNeeded();
-      this.transport.setFronteggParameters(this.config.agentId, tenantId, userId);
       const response = await this.mcpClient.listTools();
       return response.data;
     } catch (error) {
@@ -65,16 +64,19 @@ export class FronteggAiAgentsClient {
     }
   }
 
-  public async getToolsAsLangchainTools(tenantId: string, userId?: string): Promise<any[]> {
+  public async getToolsAsLangchainTools(): Promise<any[]> {
     try {
       await this.refreshTransportIfNeeded();
-      this.transport.setFronteggParameters(this.config.agentId, tenantId, userId);
       const tools = await loadMcpTools('frontegg', this.mcpClient);
       return tools;
     } catch (error) {
       Logger.error('Failed to get tools as Langchain tools', error);
       throw error;
     }
+  }
+
+  public setContext(tenantId: string, userId?: string) {
+    this.transport.setFronteggParameters(this.config.agentId, tenantId, userId);
   }
 
   private async connect() {

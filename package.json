@@ -25,7 +25,7 @@
   "dependencies": {
     "@frontegg/fes-typescript": "^0.3.7",
     "@langchain/mcp-adapters": "^0.4.2",
-    "@modelcontextprotocol/sdk": "file://./modelcontextprotocol-sdk-1.9.0.tgz",
+    "@modelcontextprotocol/sdk": "1.10.1",
     "axios": "^1.7.9",
     "winston": "^3.17.0"
   },

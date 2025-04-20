@@ -3,7 +3,6 @@ import { FronteggHttpTransport } from './frontegg-http-transport';
 import { loadMcpTools } from '@langchain/mcp-adapters';
 import Logger from './logger';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { StructuredToolInterface } from '@langchain/core/tools';
 
 export class FronteggAiAgentsClient {
   private static instance: FronteggAiAgentsClient;

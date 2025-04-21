@@ -17,7 +17,7 @@ export class FronteggAiAgentsClient {
     if (!this.config.environment) {
       this.config.environment = Environment.EU;
     }
-    this.mcpServerUrl = `https://mcp.${this.config.environment}`;
+    this.mcpServerUrl = `https://mcp.${this.config.environment}/mcp/v1`;
     this.apiUrl = `https://api.${this.config.environment}`;
 
     this.mcpClient = new Client({
@@ -25,6 +25,7 @@ export class FronteggAiAgentsClient {
       version: '1.0.0',
     });
     this.transport = new FronteggHttpTransport(new URL(this.mcpServerUrl));
+    this.transport.setAgentId(this.config.agentId);
   }
   public static async getInstance(config: FronteggAiAgentsClientConfig) {
     if (!FronteggAiAgentsClient.instance) {

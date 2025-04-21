@@ -3,25 +3,28 @@ import { FronteggHttpTransport } from './frontegg-http-transport';
 import { loadMcpTools } from '@langchain/mcp-adapters';
 import Logger from './logger';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { Environment } from './types/environment.enum';
 
 export class FronteggAiAgentsClient {
   private static instance: FronteggAiAgentsClient;
   private readonly mcpClient: Client;
   private readonly transport: FronteggHttpTransport;
+  private readonly mcpServerUrl: string;
+  private readonly apiUrl: string;
   private vendorJWT?: string;
   private vendorJWTExpiration?: Date;
   private constructor(private readonly config: FronteggAiAgentsClientConfig) {
-    if (!this.config.mcpServerUrl) {
-      this.config.mcpServerUrl = 'https://mcp.frontegg.com/'; // TODO get by region env param & stging
+    if (!this.config.environment) {
+      this.config.environment = Environment.EU;
     }
-    if (!this.config.apiUrl) {
-      this.config.apiUrl = 'https://api.frontegg.com/'; // TODO get by region env param & stging
-    }
+    this.mcpServerUrl = `https://mcp.${this.config.environment}`;
+    this.apiUrl = `https://api.${this.config.environment}`;
+
     this.mcpClient = new Client({
       name: 'Frontegg AI Agents Client',
       version: '1.0.0',
     });
-    this.transport = new FronteggHttpTransport(new URL(this.config.mcpServerUrl));
+    this.transport = new FronteggHttpTransport(new URL(this.mcpServerUrl));
   }
   public static async getInstance(config: FronteggAiAgentsClientConfig) {
     if (!FronteggAiAgentsClient.instance) {
@@ -115,7 +118,7 @@ export class FronteggAiAgentsClient {
 
   private async createVendorJWT() {
     try {
-      const response = await fetch(`${this.config.apiUrl}/auth/vendor/`, {
+      const response = await fetch(`${this.apiUrl}/auth/vendor/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

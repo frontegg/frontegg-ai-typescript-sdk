@@ -1,6 +1,7 @@
+import { Environment } from './environment.enum';
+
 export interface FronteggAiAgentsClientConfig {
-  mcpServerUrl: string;
-  apiUrl: string;
+  environment: Environment;
   agentId: string;
   clientId: string;
   clientSecret: string;

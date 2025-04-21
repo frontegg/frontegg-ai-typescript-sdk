@@ -1,9 +1,18 @@
 {
-  "name": "frontegg-ai-agents-sdk",
+  "name": "@frontegg/ai-agents-sdk",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=18.16.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf dist && tsc",
+    "build:watch": "rm -rf dist && tsc --watch",
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
+    "format": "prettier --write \"**/*.+(js|ts|json)\""
   },
   "repository": {
     "type": "git",
@@ -15,5 +24,25 @@
     "url": "https://github.com/frontegg/frontegg-ai-agents-sdk/issues"
   },
   "homepage": "https://github.com/frontegg/frontegg-ai-agents-sdk#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@langchain/mcp-adapters": "^0.4.2",
+    "@modelcontextprotocol/sdk": "1.10.1",
+    "axios": "^1.7.9",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "@types/node": "18.16.9",
+    "@typescript-eslint/eslint-plugin": "^8.19.0",
+    "@typescript-eslint/parser": "^8.19.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "semantic-release": "^24.2.3",
+    "typescript": "^5.7.2"
+  }
 }

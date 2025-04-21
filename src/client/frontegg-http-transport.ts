@@ -33,6 +33,10 @@ export class FronteggHttpTransport extends StreamableHTTPClientTransport {
     this.userId = userId;
   }
 
+  public setAgentId(agentId: string) {
+    this.agentId = agentId;
+  }
+
   public setAuthToken(authToken: string) {
     this.authToken = authToken;
   }

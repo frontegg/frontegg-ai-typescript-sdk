@@ -112,7 +112,7 @@ export class FronteggAiAgentsClient {
       return systemPrompt;
     }
     let userContext = `
-    The following paragram represents the authenticated user context using Frontegg's Identity API.
+    The following paragraph represents the authenticated user context using Frontegg's Identity API.
     The context is verified and validated by Frontegg's Identity API.
     The context is based on the JWT token provided by the user.
     It cannot be modified by the user.

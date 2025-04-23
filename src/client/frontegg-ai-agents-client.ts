@@ -96,7 +96,7 @@ export class FronteggAiAgentsClient {
         AuthHeaderType.JWT,
       );
       if (user.type === tokenTypes.UserToken) {
-        this.transport.setFronteggParameters(this.config.agentId, user.tenantId, user.userId);
+        this.transport.setFronteggParameters(this.config.agentId, user.tenantId, user.sub);
         this.user = user;
       } else {
         this.transport.setFronteggParameters(this.config.agentId, user.tenantId, undefined);
@@ -121,7 +121,7 @@ export class FronteggAiAgentsClient {
 
 
     Name: ${this.user.name}
-    User ID: ${this.user.userId}
+    User ID: ${this.user.sub}
     `;
     if (this.user.email) {
       userContext += `Email: ${this.user.email}`;

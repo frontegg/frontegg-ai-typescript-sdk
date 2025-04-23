@@ -29,6 +29,7 @@ export class FronteggAiAgentsClient {
     });
     this.transport = new FronteggHttpTransport(new URL(this.mcpServerUrl));
     this.transport.setAgentId(this.config.agentId);
+    this.setEnvParams();
   }
   public static async getInstance(config: FronteggAiAgentsClientConfig) {
     if (!FronteggAiAgentsClient.instance) {
@@ -140,6 +141,11 @@ export class FronteggAiAgentsClient {
     }
 
     return `${userContext}\n\n${systemPrompt}`;
+  }
+
+  private setEnvParams(): void {
+    process.env.FRONTEGG_AUTHENTICATION_SERVICE_URL = this.apiUrl + '/auth/vendor';
+    process.env.FRONTEGG_IDENTITY_SERVICE_URL = this.apiUrl + '/identity';
   }
 
   private async connect() {

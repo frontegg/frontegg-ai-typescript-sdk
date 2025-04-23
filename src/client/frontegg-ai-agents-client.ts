@@ -22,6 +22,10 @@ export class FronteggAiAgentsClient {
     }
     this.mcpServerUrl = `https://mcp.${this.config.environment}/mcp/v1`;
     this.apiUrl = `https://api.${this.config.environment}`;
+    if (process.env.FRONTEGG_AI_AGENTS_STG_OVERRIDE && process.env.FRONTEGG_AI_AGENTS_STG_OVERRIDE === 'true') {
+      this.apiUrl = 'https://api.stg.frontegg.com';
+      this.mcpServerUrl = 'https://mcp.stg.frontegg.com/mcp/v1';
+    }
 
     this.mcpClient = new Client({
       name: 'Frontegg AI Agents Client',

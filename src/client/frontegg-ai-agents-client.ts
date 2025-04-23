@@ -6,6 +6,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { Environment } from './types/environment.enum';
 import { IdentityClient } from '@frontegg/client';
 import { AuthHeaderType, IUser, tokenTypes } from '@frontegg/client/dist/src/clients/identity/types';
+import { config } from '@frontegg/client/dist/src/config/';
 
 export class FronteggAiAgentsClient {
   private static instance: FronteggAiAgentsClient;
@@ -148,6 +149,8 @@ export class FronteggAiAgentsClient {
   }
 
   private setEnvParams(): void {
+    config.urls.authenticationService = this.apiUrl + '/auth/vendor';
+    config.urls.identityService = this.apiUrl + '/identity';
     process.env.FRONTEGG_AUTHENTICATION_SERVICE_URL = this.apiUrl + '/auth/vendor';
     process.env.FRONTEGG_IDENTITY_SERVICE_URL = this.apiUrl + '/identity';
   }

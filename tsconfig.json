@@ -12,10 +12,13 @@
     "strict": true,
     "sourceMap": true,
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "typeRoots": ["src/types", "node_modules/@types/"],
     "inlineSources": true,
     "paths": {
-      "@frontegg/ai-sdk/*": ["./src/*"]
+      "@frontegg/ai-sdk/*": ["./src/*"],
+      "@frontegg/client/dist/src/config/": ["./node_modules/@frontegg/client/dist/src/config/index.js"]
     }
   },
   "exclude": ["node_modules", "dist"],

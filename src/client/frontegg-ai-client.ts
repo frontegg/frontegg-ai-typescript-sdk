@@ -6,7 +6,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { Environment } from './types/environment.enum';
 import { IdentityClient } from '@frontegg/client';
 import { AuthHeaderType, IUser, tokenTypes } from '@frontegg/client/dist/src/clients/identity/types';
-import { config } from '@frontegg/client/dist/src/config/';
+import { config } from '@frontegg/client/dist/src/config/index.js';
 import { FronteggContext } from '@frontegg/client';
 export class FronteggAiClient {
   private static instance: FronteggAiClient;

@@ -1,6 +1,6 @@
 import { Environment } from './environment.enum';
 
-export interface FronteggAiAgentsClientConfig {
+export interface FronteggAiClientConfig {
   environment: Environment;
   agentId: string;
   clientId: string;

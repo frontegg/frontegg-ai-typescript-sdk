@@ -1,2 +1,2 @@
-export * from './frontegg-ai-agents-client';
+export * from './frontegg-ai-client';
 export * from './types';

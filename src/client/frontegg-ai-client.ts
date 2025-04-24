@@ -1,4 +1,4 @@
-import { FronteggAiAgentsClientConfig } from './types/frontegg-ai-agents-client-config';
+import { FronteggAiClientConfig } from './types/frontegg-ai-client-config';
 import { FronteggHttpTransport } from './frontegg-http-transport';
 import { loadMcpTools } from '@langchain/mcp-adapters';
 import Logger from './logger';
@@ -7,9 +7,9 @@ import { Environment } from './types/environment.enum';
 import { IdentityClient } from '@frontegg/client';
 import { AuthHeaderType, IUser, tokenTypes } from '@frontegg/client/dist/src/clients/identity/types';
 import { config } from '@frontegg/client/dist/src/config/';
-
-export class FronteggAiAgentsClient {
-  private static instance: FronteggAiAgentsClient;
+import { FronteggContext } from '@frontegg/client';
+export class FronteggAiClient {
+  private static instance: FronteggAiClient;
   private readonly mcpClient: Client;
   private readonly transport: FronteggHttpTransport;
   private readonly mcpServerUrl: string;
@@ -17,7 +17,7 @@ export class FronteggAiAgentsClient {
   private vendorJWT?: string;
   private vendorJWTExpiration?: Date;
   private user?: IUser;
-  private constructor(private readonly config: FronteggAiAgentsClientConfig) {
+  private constructor(private readonly config: FronteggAiClientConfig) {
     if (!this.config.environment) {
       this.config.environment = Environment.EU;
     }
@@ -28,27 +28,32 @@ export class FronteggAiAgentsClient {
       this.mcpServerUrl = 'https://mcp.stg.frontegg.com/mcp/v1';
     }
 
+    FronteggContext.init({
+      FRONTEGG_CLIENT_ID: this.config.clientId,
+      FRONTEGG_API_KEY: this.config.clientSecret,
+    });
+
     this.mcpClient = new Client({
-      name: 'Frontegg AI Agents Client',
+      name: 'Frontegg AI Client',
       version: '1.0.0',
     });
     this.transport = new FronteggHttpTransport(new URL(this.mcpServerUrl));
     this.transport.setAgentId(this.config.agentId);
     this.setEnvParams();
   }
-  public static async getInstance(config: FronteggAiAgentsClientConfig) {
-    if (!FronteggAiAgentsClient.instance) {
-      FronteggAiAgentsClient.instance = new FronteggAiAgentsClient(config);
+  public static async getInstance(config: FronteggAiClientConfig) {
+    if (!FronteggAiClient.instance) {
+      FronteggAiClient.instance = new FronteggAiClient(config);
       try {
-        await FronteggAiAgentsClient.instance.refreshTransport();
-        await FronteggAiAgentsClient.instance.connect();
+        await FronteggAiClient.instance.refreshTransport();
+        await FronteggAiClient.instance.connect();
       } catch (error) {
-        Logger.error('Failed to initialize FronteggAiAgentsClient instance', error);
+        Logger.error('Failed to initialize FronteggAiClient instance', error);
         throw error;
       }
     }
 
-    return FronteggAiAgentsClient.instance;
+    return FronteggAiClient.instance;
   }
 
   public async getTools() {

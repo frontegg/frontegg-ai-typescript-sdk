@@ -1,2 +1,2 @@
 export * from './environment.enum';
-export * from './frontegg-ai-agents-client-config';
+export * from './frontegg-ai-client-config';

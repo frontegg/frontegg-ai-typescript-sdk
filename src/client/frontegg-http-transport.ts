@@ -1,29 +1,33 @@
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
-// @ts-ignore
+// @ts-expect-error overriding private properties in order to pass custom headers
 export class FronteggHttpTransport extends StreamableHTTPClientTransport {
   private agentId!: string;
   private tenantId!: string;
   private userId?: string;
   private authToken!: string;
+  private userAccessToken?: string;
   constructor(url: URL) {
     super(url);
   }
 
   async _commonHeaders() {
     const headers = {};
-    // @ts-ignore
+    // @ts-expect-error as per original implementation
     if (this._sessionId) {
-      // @ts-ignore
+      // @ts-expect-error as per original implementation
       headers['mcp-session-id'] = this._sessionId;
     }
     headers['Authorization'] = `Bearer ${this.authToken}`;
     headers['agent-id'] = this.agentId;
     headers['tenant-id'] = this.tenantId;
+    if (this.userAccessToken) {
+      headers['frontegg-user-access-token'] = this.userAccessToken;
+    }
     if (this.userId) {
       headers['user-id'] = this.userId;
     }
-    // @ts-ignore
+    // @ts-expect-error as per original implementation
     return new Headers({ ...headers, ...this._requestInit?.headers });
   }
 
@@ -39,5 +43,9 @@ export class FronteggHttpTransport extends StreamableHTTPClientTransport {
 
   public setAuthToken(authToken: string) {
     this.authToken = authToken;
+  }
+
+  public setUserAccessToken(userAccessToken: string) {
+    this.userAccessToken = userAccessToken;
   }
 }

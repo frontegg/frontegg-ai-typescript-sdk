@@ -108,11 +108,13 @@ export class FronteggAiClient {
       );
       if (user.type === tokenTypes.UserToken) {
         this.transport.setFronteggParameters(this.config.agentId, user.tenantId, user.sub);
+        this.transport.setUserAccessToken(userJwt);
         this.user = user;
       } else {
         this.transport.setFronteggParameters(this.config.agentId, user.tenantId, undefined);
       }
-    } catch (e) {
+    } catch (error) {
+      Logger.error('Failed to set user context by JWT', error);
       return false;
     }
     return true;

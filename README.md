@@ -1,14 +1,10 @@
 # Frontegg AI Agents SDK
 
-A powerful SDK for building AI-powered agents and integrating them with the Frontegg platform.
-
-## Overview
-
 The Frontegg AI Agents SDK provides AI Agent developers with tools and utilities to easily empower AI agents within their applications. This SDK seamlessly integrates with the Frontegg platform, enabling advanced tool authentication, authorization, and identity management capabilities for AI Agents.
 
 ## Features
 
-- 🔒 Secure integration with Frontegg authentication
+- Secure integration with Frontegg authentication
 - Easy integration with Frontegg built-in and 3rd party application tools
 - User identity context for agent throught Frontegg's identity platform
 - Seamless integration with Langchain AI applications and agents
@@ -96,7 +92,7 @@ For detailed documentation, please visit our [official documentation](https://do
 
 ## Examples
 
-Check out our [examples directory](./examples) for sample implementations and use cases.
+Check out our [example project](https://github.com/frontegg/commitment-lifecycle-agent) for sample implementations and use cases.
 
 ## Contributing
 
@@ -109,7 +105,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 - 📚 [Documentation](https://docs.frontegg.com/ai-agents)
-- 💬 [Community Forum](https://community.frontegg.com)
+- 💬 [Community Slack](https://join.slack.com/t/frontegg-community/shared_invite/zt-e1oxi1vn-SZErBZcwHcbgj4vrwRIp5A)
 - 📧 [Email Support](mailto:support@frontegg.com)
 
 ## About Frontegg

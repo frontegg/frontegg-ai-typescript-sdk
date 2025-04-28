@@ -23,10 +23,6 @@ export class FronteggAiClient {
     }
     this.mcpServerUrl = `https://mcp.${this.config.environment}/mcp/v1`;
     this.apiUrl = `https://api.${this.config.environment}`;
-    if (process.env.FRONTEGG_AI_AGENTS_STG_OVERRIDE === 'true') {
-      this.apiUrl = 'https://api.stg.frontegg.com';
-      this.mcpServerUrl = 'https://mcp.stg.frontegg.com/mcp/v1';
-    }
 
     FronteggContext.init({
       FRONTEGG_CLIENT_ID: this.config.clientId,
@@ -139,6 +135,9 @@ export class FronteggAiClient {
     if (this.user.email) {
       userContext += `Email: ${this.user.email}`;
     }
+    if (this.user.tenantId) {
+      userContext += `Active Tenant ID: ${this.user.tenantId}`;
+    }
     if (this.user.roles) {
       userContext += `Roles: ${this.user.roles.join(', ')}`;
     }
@@ -146,7 +145,7 @@ export class FronteggAiClient {
       userContext += `Permissions: ${this.user.permissions.join(', ')}`;
     }
     if (this.user.tenantIds) {
-      userContext += `Tenant IDs: ${this.user.tenantIds.join(', ')}`;
+      userContext += `Assigned Tenant IDs: ${this.user.tenantIds.join(', ')}`;
     }
     if (this.user.profilePictureUrl) {
       userContext += `Profile Picture URL: ${this.user.profilePictureUrl}`;

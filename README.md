@@ -21,9 +21,9 @@ Ensure that your environment meets the following requirements:
 ## Installation
 
 ```bash
-npm install frontegg-ai-agents-sdk
+npm install @frontegg/ai-sdk
 # or
-yarn add frontegg-ai-agents-sdk
+yarn add @frontegg/ai-sdk
 ```
 
 ## Quick Start

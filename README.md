@@ -36,7 +36,7 @@ Initialize the Frontegg AI client to connect with your tenant environment:
 // frontegg.config.ts
 import { Environment, FronteggAiClient } from '@frontegg/ai-sdk';
 
-export const fronteggClient = await FronteggAiClient.getInstance({
+export const fronteggAiClient = await FronteggAiClient.getInstance({
   agentId: process.env.FRONTEGG_AGENT_ID!,
   clientId: process.env.FRONTEGG_CLIENT_ID!,
   clientSecret: process.env.FRONTEGG_CLIENT_SECRET!,
